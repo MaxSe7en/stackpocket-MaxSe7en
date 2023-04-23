@@ -4,7 +4,7 @@
  * @param {number} row1Sample - An integer representing the number of selections that can be made from the first row.
  * @param {array} [row2Selections=false] - An optional array containing the selections for the second row. Defaults to false if not provided.
  * @param {number} [row2Sample=false] - An optional integer representing the number of selections that can be made from the second row. Defaults to false if not provided.
- * @returns {number} - The total number of possible combinations of selections across both rows.
+ * @returns {number} - The total number of possible combinations of selectionss across both rows.
  */
 function _combinations_totalBets(...rowsAndSamples: (any[] | number)[]): number {
   let rows: any[][] = [],
