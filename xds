@@ -1,0 +1,8 @@
+https://xd.adobe.com/view/b2c12e21-b8e8-4132-b4b9-8881535e88bf-e792/
+export function calculateBets(
+  gameId: number,
+  selections: Record<string, any[]>,
+  startingPoint: number,
+  rows: number,
+  sample: any
+) {
