@@ -1,0 +1,157 @@
+// App.tsx
+import React, { memo, useEffect, useReducer, useState } from "react";
+import GamePlayComponent from "./GamePlayComponent";
+// import { cartReducer, Reducer } from "@/games/5d/useReducer";
+// import { INITIAL_CART_STATE, INITIAL_STATE } from "@/games/5d/stateActions";
+// import { straightCombo, straightJoint } from "@/functions/betsCalculation";
+import Cart from "@/functions/cart";
+import axios from 'axios';
+import { allSelections, filterSelections, fixArithmetic, gameFunctionSelector, userSelections } from "@/functions/msc";
+import { GameData } from "@/interfaces/reducer";
+import { betNow } from "@/services/betnow";
+import { cartReducer } from "@/games/5d/useReducer";
+import { INITIAL_CART_STATE } from "@/games/5d/stateActions";
+
+// Define an interface for the "AppProps" object passed to the component
+type AppProps = {
+  rows: number; // The number of rows to render
+  start: number; // The starting position for the game
+  end: number; // The ending position for the game
+  columnSelection: boolean; // A boolean value indicating whether or not column selection is enabled
+  rowSelection: boolean; // A boolean value indicating whether or not row selection is enabled
+  selections?: any; // An optional value that represents the current selections made by the user
+  dispatch?: any; // An optional function that is used to update the "selections" state
+  showRowName?: boolean; // An optional boolean value indicating whether or not the row name should be displayed
+  startingPoint: number; // The starting point for the rows
+  // endingPoint: number; // The ending point for the rows
+  gameFunction: Function;
+  // game: any; //
+  // dispatch: any
+  betId: string;
+  gameId: number;
+
+};
+
+// An array of numbers representing the rows to render
+const rowsArr = [
+  { number: 1, name: "1st" },
+  { number: 2, name: "2nd" },
+  { number: 3, name: "3rd" },
+  { number: 4, name: "4th" },
+  { number: 5, name: "5th" },
+];
+
+const unitArr = [2, 1, 0.2, 0.02, 0.01, 0.002, 0.001];
+const multiplierArr = [1, 5, 10, 20];
+/**
+ * This is a functional component called "GamePlayWrapper" that receives an object of props named "AppProps".
+ * It renders a div that contains multiple instances of another component called "GamePlayComponent", based on the number of rows passed as a prop.
+ */
+const GamePlayWrapper: React.FC<AppProps> = ({
+  rows, // The number of rows to render
+  start, // The starting position for the game
+  end, // The ending position for the game
+  columnSelection, // An array of column indices that should be selected
+  rowSelection, // An array of row indices that should be selected
+  showRowName, // A boolean value indicating whether or not the row name should be displayed
+  startingPoint, // The starting point for the rows
+  // endingPoint, // The ending point for the rows
+  gameFunction,
+  // game,
+  dispatch,
+  selections,
+  betId,
+  gameId
+}) => {
+  const [cartState, cartDispatch] = useReducer(cartReducer, INITIAL_CART_STATE);
+
+  /**
+   * This initializes state management for the component.
+   * The "useReducer" hook is used to manage state, and the "INITIAL_STATE" object provides the initial state values.
+   * The "selections" state represents the current selections made by the user.
+   */
+  const [multiplier, setMultiplier] = useState(1);
+  const [unit, setUnit] = useState(1);
+
+  /**
+   * This "useEffect" hook is used to log the current value of the "selections" state whenever it changes.
+   */
+  useEffect(() => {
+    // gameFunctionSelector(game)
+    console.log(selections);
+    console.log(gameFunction(selections, startingPoint, rows))
+  }, [Object.values(selections)]);
+  let totalBetsCalc = gameFunction(selections, startingPoint, rows);
+  let totalBetAmt = totalBetsCalc * unit * multiplier;
+
+  let bet: GameData = {
+    uid: 1,//PASS USER ID HERE
+    allSelections: filterSelections(selections),
+    userSelections: userSelections(selections),
+    multiplier: multiplier,
+    totalBets: totalBetsCalc,
+    gameId: gameId,//PASS GAME ID HERE
+    totalBetAmt: fixArithmetic(totalBetAmt),
+    unitStaked: unit,
+    betId: betId,
+
+  }
+
+  return (
+    <div>
+      {/* This maps over an array of numbers up to the number of rows and renders a "GamePlayComponent" for each one */}
+      {rowsArr.slice(startingPoint - 1, rows).map(({ number, name }, index) => (
+        <GamePlayComponent
+          start={start}
+          end={end}
+          key={number}
+          rowId={number}
+          rowName={name}
+          rows={rows}
+          index={index}
+          columnSelection={columnSelection}
+          rowSelection={rowSelection}
+          selections={selections}
+          dispatch={dispatch}
+          showRowName={showRowName}
+        />
+      ))}
+      <br />
+      <br />
+      <div>
+        {totalBetsCalc} bets Total {fixArithmetic(totalBetAmt)} <br />
+        {unitArr.map((number, index) => (
+          <button key={index} onClick={() => setUnit(number)}>
+            {number}
+          </button>
+        ))}
+        <br />
+        <br />
+        <div>Bets results {"---->"} {totalBetsCalc}</div>
+        <span>
+          <button onClick={() => setMultiplier(multiplier - 1)}>-</button>
+          <button>X{multiplier}</button>
+          <button onClick={() => setMultiplier(multiplier + 1)}>+</button>
+          {multiplierArr.map((number, index) => (
+            <button key={index} onClick={() => setMultiplier(number)}>
+              X{number}
+            </button>
+          ))}
+        </span>
+        <Cart selections={selections} multiplier={multiplier} totalBets={totalBetsCalc} gameId={1} totalBetAmt={fixArithmetic(totalBetAmt)} unitStaked={unit} cartDispatch={cartDispatch} cartState={cartState} />
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <button onClick={() => {
+        delete bet.uid;
+        console.log(bet)
+        betNow(bet)
+        // filterSelections(selections)
+      }} style={{ "backgroundColor": "#000", color: "#fff" }}>bet now</button>
+    </div>
+  );
+};
+
+export default memo(GamePlayWrapper); // Export the component as the default export for use in other files
