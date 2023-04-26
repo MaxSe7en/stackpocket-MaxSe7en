@@ -1,0 +1,17 @@
+<GamePlayWrapper
+          rows={1} // The number of rows to render
+          start={1} // The starting position for the buttons
+          end={26} // The ending position for the buttons
+          columnSelection={true} // Show column selections for fixed place
+          rowSelection={true} // Show row selections eg. even, odd, big, small
+          showRowName={true} // Show the name of the row or row title
+          startingPoint={1} //  The starting points of the rows
+
+          // endingPoint={5} // The ending points of the rows
+          // CalculateBets function takes in 5 parameters, the first is the game id, the second is the selections,
+          // the third is the starting point, the fourth is the number of rows and the fifth is the sample
+          // or constraint respectively.eg [1,2],[1,3],[2,1]
+          gameFunction={() => calculateBets(138, selections, 1, 1, [4])}
+          // game={games.a_5.group30}
+          selections={selections}
+          dispatch={dispatch} betId={"202304210085"} gameId={20}        />
