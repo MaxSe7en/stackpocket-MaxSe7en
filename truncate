@@ -1,0 +1,19 @@
+/**
+ * Truncates a string with an ellipsis after a certain number of characters and replaces commas with spaces and pipes with commas and spaces.
+ *
+ * @param {string} input - The string to be truncated and modified.
+ * @param {number} [truncateAfter=19] - The maximum length of the string before it should be truncated. Default value is 19 if not provided.
+ * @returns {string} The truncated and modified string.
+ */
+export function truncateEllipsis(input, truncateAfter = 20) {
+  if (input.length > truncateAfter) {
+    // Replace commas with spaces and pipes with commas followed by spaces
+    const modifiedInput = input.replace(/,/g, " ").replace(/\|/g, ", ");
+    
+    // Extract a substring of length `truncateAfter` from the modified input and add an ellipsis to the end
+    return modifiedInput.substring(0, truncateAfter) + " ...";
+  } else {
+    // If the input string is not longer than `truncateAfter`, return the original string
+    return input.replace(/,/g, " ");
+  }
+}
