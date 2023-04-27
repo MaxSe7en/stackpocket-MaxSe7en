@@ -1,0 +1,73 @@
+
+.tableFixHead {
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.tableFixHead input[type=number]#betID::-webkit-inner-spin-button, 
+.tableFixHead input[type=number]#betID::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.tableFixHead input[type=number]#betID:focus, 
+.tableFixHead input[type=number]#betID:focus {
+  outline: none;
+}
+
+.tableFixHead table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.tableFixHead th,
+.tableFixHead td {
+  padding: 8px 16px;
+}
+
+.track-table-content thead{
+  background: var(--lighterGrey);
+  border-bottom: 1px solid var(--lighterGrey);
+
+
+}
+
+
+
+.tableFixHead thead {
+  position: sticky;
+  top: -1px;
+  background: var(--lighterGrey);
+}
+
+
+/********** STYLING FOR SCROLLBAR IN TABLE **********************/
+/*! Firefox */    
+.tableFixHead{
+  scrollbar-color: #128612 #004E00;
+}
+
+/*! Other Browser */
+.tableFixHead {
+  --scrollbarBG: #caffff;
+  --thumbBG: #0392f1;
+}
+.tableFixHead::-webkit-scrollbar {
+  width: 11px;
+}
+.tableFixHead {
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+.tableFixHead::-webkit-scrollbar-track {
+  background: var(--scrollbarBG);
+}
+.tableFixHead::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBG) ;
+  border-radius: 6px;
+  border: 3px solid var(--scrollbarBG);
+}
+
+.tableFixHead ul {
+  background-color: transparent;
+  width: 100%;
+}
