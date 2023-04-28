@@ -1,0 +1,16 @@
+generateDrawPeriods(currentBetId = drawData.betId, idDateTime = drawData.drawDatetime) {
+    let draw_periodz = "";
+    for (let i = 0; i < 3; i++) {
+      currentBetId = game.generateNextBetId(
+        currentBetId,
+        idDateTime,
+        intervalMinutes
+      );
+      idDateTime = game.addMinutes(idDateTime, intervalMinutes);
+
+      draw_periodz += `<option value="${currentBetId}">${currentBetId}</option>`;
+      draw_period[i] = currentBetId;
+    }
+    $('select[name="draw__period"]').html(draw_periodz);
+    // console.log("========================draw_periods=========================================", draw_period);
+  }
