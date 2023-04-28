@@ -1,0 +1,12 @@
+ let bet: GameData = {
+    uid: 1, //PASS USER ID HERE
+    allSelections: filterSelections(selections),
+    userSelections: userSelections(selections),
+    multiplier: multiplier,
+    totalBets: totalBetsCalc,
+    gameId: gameId, //PASS GAME ID HERE
+    totalBetAmt: fixArithmetic(totalBetAmt),
+    unitStaked: unit,
+    betId: betId,
+    gameType:""
+  };
