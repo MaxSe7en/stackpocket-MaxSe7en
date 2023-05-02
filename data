@@ -1,0 +1,1 @@
+[{"allSelections":[[0,1,2,3,4,5,6,7,8,9]],"userSelections":"0,1,2,3,4,5,6,7,8,9","multiplier":1,"totalBets":252,"gameId":20,"totalBetAmt":5.04,"unitStaked":0.02,"betId":"202305021064","gameType":""}]
