@@ -1,0 +1,20 @@
+function formatDrawResponse(response) {
+
+  console.log("response==============================>", response)
+  response = sliceFromJson(response, -2); //gets the last two  data in the object
+  let responseData = response[Object.keys(response)[0]]; // gets the last but one property of the object
+  let timeLeft = response[Object.keys(response)[1]]; // gets the time left property
+  let drawNumber = responseData.draw_number.split(",").map(el => +el); // gets the draw numbers in an array as integers
+  console.log("draw_datetime==============================>", responseData.draw_time)
+  let formattedResponse = {
+    responseId: responseData.id,
+    betId: responseData.draw_date,
+    drawDatetime: responseData.draw_time,
+    drawNumber: drawNumber,
+    timeLeft: timeLeft,
+    nextBetId: game.generateNextBetId(responseData.draw_date, responseData.draw_time, intervalMinutes),
+    nextDrawDatetime: game.getDateTime(game.addMinutes(responseData.draw_time, intervalMinutes)) 
+  }
+console.log("formattedResponse==============================>", formattedResponse)
+  return formattedResponse;
+}
