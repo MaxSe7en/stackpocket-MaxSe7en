@@ -1,0 +1,69 @@
+import { bet_now_url, track_url } from './../utils/Endpoints';
+import { GameData } from "@/interfaces/reducer";
+import axios from "axios";
+
+let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjE5LCJ1c2VybmFtZSI6bnVsbCwiZW1haWwiOiJ0ZXN0QG1heC5jb20iLCJiYWxhbmNlIjoiNDMwNjEuNDI4NiIsImFjY291bnRfdHlwZSI6ImN1c3RvbWVyIiwiZXhwaXJ5IjoxNjgzMjE0Nzc2fQ.fM6UpxU5ezNDuVuPPxSWuw9y84BYfDiI2O_AyIeXbII"
+const config = {
+  headers: {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  }
+};
+export const betNow = async (bet_item: GameData) => {
+
+  console.log(bet_item)
+  let bet_data = JSON.stringify([bet_item])
+  console.log(bet_data)
+  // Make API request
+  await axios.post(bet_now_url, bet_data, config).then(response => {
+    console.log(response);
+
+  }).catch(error => {
+    console.error(error);
+    // Handle error
+  });
+};
+
+
+export const getTrackData = async (trackData: { trackInfo: any; bets: any; }, trackState: any, stopIfWin: any, stopIfNotWin: any) => {
+  let _all: any = {};
+  _all["bets"] = {...trackData.bets};
+  _all["trackData"] = trackState;
+  _all["trackInfo"] = {}; // Initialize the trackInfo property as an empty object
+  _all["trackInfo"]["total_draws"] = +trackData.trackInfo.totalDraws;
+  _all["trackInfo"]["total_amt_bets"] = trackData.trackInfo.eachTotalBets * trackData.trackInfo.totalDraws;
+  _all["trackInfo"]["total_amt_to_pay"] = trackData.trackInfo.totalBetAmt;
+  _all["trackInfo"]["stop_if_win"] = stopIfWin;
+  _all["trackInfo"]["stop_if_not_win"] = stopIfNotWin;
+  console.log("-----------------{}{}{}-------------->", _all)
+  // Make API request
+  await axios.post(track_url, _all, config).then(response => {
+    console.log(response);
+
+  }).catch(error => {
+    console.error(error);
+    // Handle error
+  });
+}
+
+export const getTrackYieldData = async (trackYieldData: { bets: any; trackInfo: any; }, trackState: any, stopIfWin: any, stopIfNotWin: any) => {
+  let _all: any = {};
+  _all["bets"] = {...trackYieldData.bets};
+  _all["trackData"] = trackState;
+  _all["trackInfo"] = {}; // Initialize the trackInfo property as an empty object
+  _all["trackInfo"]["total_draws"] = +trackYieldData.trackInfo.total_draws;
+  _all["trackInfo"]["total_amt_bets"] = trackYieldData.trackInfo.total_amt_bets;
+  _all["trackInfo"]["total_amt_to_pay"] = trackYieldData.trackInfo.total_amt_to_pay;
+  _all["trackInfo"]["stop_if_win"] = stopIfWin;
+  _all["trackInfo"]["stop_if_not_win"] = stopIfNotWin;
+  console.log("----------------[][][]--------------->", _all)
+
+  // Make API request
+  await axios.post(track_url, _all, config).then(response => {
+    console.log(response);
+
+  }).catch(error => {
+    console.error(error);
+    // Handle error
+  });
+}
