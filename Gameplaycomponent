@@ -12,7 +12,7 @@ import { betNow } from "@/services/betnow";
 import { cartReducer } from "@/games/5d/useReducer";
 import { INITIAL_CART_STATE } from "@/games/5d/stateActions";
 
-// Define an interface for the "AppProps" object passed to the component
+// Defined here is an interface for the "AppProps" object passed to the component
 type AppProps = {
   rows: number; // The number of rows to render
   start: number; // The starting position for the game
