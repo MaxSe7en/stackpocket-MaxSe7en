@@ -1,0 +1,21 @@
+/**
+* Calculates the sum of total bet amount and total bets of items in a cart
+* @param {Object} cart - The cart object containing items with total bet amount and total bets
+* @returns {Array} - Array containing sum of total bet amount and total bets
+*/
+export function sumBetAmtAndBets(cart: any): Array<any> {
+  let cartObject = cart;
+  let sumTotalBets = 0;
+  let sumTotalBetAmt = 0;
+  const results = [];
+  // Iterate through each item in the cart object and calculate sum of total bets and total bet amount
+  for (const key in cartObject) {
+    const totalBetAmt = cartObject[key].totalBetAmt;
+    const totalBets = cartObject[key].totalBets;
+    sumTotalBets += totalBets;
+    sumTotalBetAmt += totalBetAmt;
+  }
+  // Add sum of total bet amount and total bets to the results array after fixing any arithmetic issues
+  results.push(fixArithmetic(sumTotalBetAmt), sumTotalBets);
+  return results;
+}
