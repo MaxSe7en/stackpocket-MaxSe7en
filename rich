@@ -1,0 +1,2 @@
+ nextBetId: game.generateNextBetId(responseData.draw_date, responseData.draw_time, intervalMinutes),
+    nextDrawDatetime: game.getDateTime(game.addMinutes(responseData.draw_time, intervalMinutes)) 
