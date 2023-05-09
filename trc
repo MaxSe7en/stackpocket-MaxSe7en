@@ -1,0 +1,27 @@
+useEffect(() => {
+    console.log("trackData", trackData)
+    setTrackData(createTrackJson(
+      drawData.drawDatetime,
+      drawData.nextBetId,
+      defaultTrackDraws,
+      firstMultiplier,
+      multiplyAfterEvery,
+      multiplyBy,
+      bet.totalBetAmt,
+      bet.totalBets
+    ))
+  }, [defaultTrackDraws, firstMultiplier, multiplyAfterEvery, multiplyBy, bet.totalBetAmt]);
+
+  useEffect(() => {
+    setTrackYieldData(createTrackYield(
+      drawData.drawDatetime,
+      drawData.nextBetId,
+      trackYieldDraw,
+      bet.totalBets,
+      firstYieldMultiplier,
+      bet.totalBetAmt,
+      1615,
+      minimumYield
+    ))
+  }, [firstYieldMultiplier, minimumYield, trackYieldDraw]);
+  
