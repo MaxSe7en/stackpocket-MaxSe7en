@@ -15,7 +15,7 @@ export function sumBetAmtAndBets(cart: any): Array<any> {
     sumTotalBets += totalBets;
     sumTotalBetAmt += totalBetAmt;
   }
-  // Add sum of total bet amount and total bets to the results array after fixing any arithmetic issues
+  // .Add sum of total bet amount and total bets to the results array after fixing any arithmetic issues
   results.push(fixArithmetic(sumTotalBetAmt), sumTotalBets);
   return results;
 }
