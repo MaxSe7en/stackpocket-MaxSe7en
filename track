@@ -1,0 +1,26 @@
+ currentAmt,
+                      estimatedDrawTime,
+                      expectedProfit,
+                      multiplier,
+                      nextDay,
+                      percentageProfit,
+                    }: any,
+                    index: number
+                  ) => (
+                    <tr key={index}>
+                      <td style={tdStyle as CSSProperties}>
+                      {betId} {show && current && <button>Current</button>}{" "}
+                          {nextDay && <button>Next Day</button>}{" "}
+                          {index === 1 && !show && <button>Current</button>}
+                      </td>
+                      <td style={tdStyle as CSSProperties}>{multiplier}</td>
+                      <td style={tdStyle as CSSProperties}>{betAmt}</td>
+                      <td style={tdStyle as CSSProperties}>{bonus}</td>
+                      <td style={tdStyle as CSSProperties}>{currentAmt}</td>
+                      <td style={tdStyle as CSSProperties}>{expectedProfit}</td>
+                      <td style={tdStyle as CSSProperties}>
+                        {percentageProfit}
+                      </td>
+                      <td style={tdStyle as CSSProperties}>
+                        {" "}
+                        {estimatedDrawTime}
