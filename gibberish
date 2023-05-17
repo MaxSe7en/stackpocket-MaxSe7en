@@ -1,0 +1,17 @@
+{
+    "game_id": 166,
+    "name": "First 3 Half Streak",
+    "status": "active",
+    "currentodds": "2.754",
+    "guide": "First3:[1st,2nd,3rd].\r\nMid3:[2nd,3rd,4th].\r\nLast3:[3rd,4th,5th].\r\nInrow:Cyclebetween0-1-2-3-4-5-6-7-8-9-0.\r\nTOAK:3samenumbers.\r\nE.g.WinningNo.1,1,1,*,*.Bet「First3TOAK」,aswin.\r\nStreak:3relatednumbers.\r\nE.g.WinningNo.9,1,0,*,*.Bet「First3Straight」,aswin.\r\nPair:1of3numbersoccur2x,otheroccur1x.\r\nE.g.WinningNo.0,3,0,*,*.Bet「First3Pair」,aswin.\r\nHalfStreak:3differentnumbers,2numbersrelated.\r\nE.g.WinningNo.0,1,3,*,*.Bet「First3HalfStreak」,aswin.\r\nMixed6:3different&unrelatednumbers.\r\nE.g.WinningNo.0,3,5,*,*.Bet「First3Mixed6」,aswin.",
+    "sample": null,
+    "rows": null,
+    "start": null,
+    "end": null,
+    "columnSelection": null,
+    "rowSelection": null,
+    "showRowName": null,
+    "startingPoint": null,
+    "endingPoint": null,
+    "model": "twosides"
+  },
