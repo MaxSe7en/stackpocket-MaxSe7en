@@ -1,0 +1,6 @@
+.home_rebate{
+    color: orangered;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 5px;
+}
