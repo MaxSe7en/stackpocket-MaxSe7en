@@ -1,0 +1,47 @@
+
+Warning: Received NaN for the `children` attribute. If this is expected, cast the value to a string.
+    at span
+    at div
+    at div
+    at div
+    at GameNames (webpack-internal:///./src/components/uiComponents/HelperComponents/GameNames.jsx:41:76)
+    at div
+    at div
+    at GameDashboard (webpack-internal:///./src/components/uiComponents/HelperComponents/GameDashboard.jsx:58:90)
+    at div
+    at div
+    at div
+    at ProtectedRoute (webpack-internal:///./src/components/ProtectedRoute.jsx:16:11)
+    at Navbar (webpack-internal:///./src/components/uiComponents/Navigations/Navbar.tsx:27:11)
+    at GamePlayComponent (webpack-internal:///./src/pages/game/[gamename].jsx:29:11)
+    at QueryClientProvider (webpack-internal:///./node_modules/react-query/es/react/QueryClientProvider.js:39:21)
+    at BetProvider (webpack-internal:///./src/StateContex/GameContext.tsx:24:11)
+    at StateProvider (webpack-internal:///./src/StateContex/index.jsx:29:11)
+    at App (webpack-internal:///./src/pages/_app.tsx:38:11)
+    at PathnameContextProviderAdapter (webpack-internal:///./node_modules/next/dist/shared/lib/router/adapters.js:62:11)
+    at ErrorBoundary (webpack-internal:///./node_modules/next/dist/compiled/@next/react-dev-overlay/dist/client.js:303:63)
+    at ReactDevOverlay (webpack-internal:///./node_modules/next/dist/compiled/@next/react-dev-overlay/dist/client.js:852:919)
+    at Container (webpack-internal:///./node_modules/next/dist/client/index.js:62:1)
+    at AppContainer (webpack-internal:///./node_modules/next/dist/client/index.js:172:11)
+    at Root (webpack-internal:///./node_modules/next/dist/client/index.js:347:11)
+console.error @ client.js:1
+window.console.error @ next-dev.js:20
+overrideMethod @ react_devtools_backend_compact.js:2367
+printWarning @ react-dom.development.js:86
+error @ react-dom.development.js:60
+validateProperty$1 @ react-dom.development.js:3736
+warnUnknownProperties @ react-dom.development.js:3803
+validateProperties$2 @ react-dom.development.js:3827
+validatePropertiesInDevelopment @ react-dom.development.js:9541
+setInitialProperties @ react-dom.development.js:9830
+finalizeInitialChildren @ react-dom.development.js:10950
+completeWork @ react-dom.development.js:22193
+completeUnitOfWork @ react-dom.development.js:26596
+performUnitOfWork @ react-dom.development.js:26568
+workLoopSync @ react-dom.development.js:26466
+renderRootSync @ react-dom.development.js:26434
+performConcurrentWorkOnRoot @ react-dom.development.js:25738
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533
+12:21:10.761 GameNavigation.tsx:40 JSON.stringify( (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
