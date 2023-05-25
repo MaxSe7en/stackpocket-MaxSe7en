@@ -1,0 +1,20 @@
+   * The columnSelection and rowSelection props are set to true, which means that the user can select numbers by clicking on either a column or a row. */}
+      <GamePlayWrapper
+        rows={rows} // The number of rows to render
+        start={start} // The starting position for the buttons
+        end={end} // The ending position for the buttons
+        columnSelection={columnSelection === 1 ? true : false} // Show column selections for fixed place
+        rowSelection={rowSelection === 1 ? true : false} // Show row selections eg. even, odd, big, small
+        showRowName={showRowName === 1 ? true : false} // Show the name of the row or row title
+        startingPoint={startingPoint} //  The starting points of the rows
+        // CalculateBets function takes in 5 parameters, the first is the game id, the second is the selections,
+        // the third is the starting point, the fourth is the number of rows and the fifth is the sample
+        // or constraint respectively.eg [1,2],[1,3],[2,1]
+        gameFunction={() => calculateBets(gameType_id, selections, startingPoint, endingPoint, mainSample, [5, 1,3,4])}
+        selections={selections}
+        dispatch={dispatch}
+        betId={drawData.nextBetId}
+        gameId={gameType_id} // game={games.a_5.group30}
+        endingPoint={endingPoint}   // not the actual endpoint
+        // showCheckbox={true}
+        />
