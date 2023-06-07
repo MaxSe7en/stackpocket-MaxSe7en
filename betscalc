@@ -1,0 +1,966 @@
+import {
+  _combinations_totalBets,
+  filterObjectSelections,
+  generateCombinations,
+  getCombination,
+  getPermutation,
+} from "./msc";
+const buttons: number[] = [
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+  22, 23, 24, 25, 26, 27,
+];
+
+/**
+ * Calculates the number of possible combinations that can be made by selecting one element from each array in the given object of arrays,
+ * starting from the specified starting point and taking a total of 'rows' arrays.
+ * @param selections - An object of arrays, where each array contains the elements to choose from.
+ * @param startingPoint - An integer specifying the starting point to select arrays from the object.
+ * @param rows - An integer specifying the number of arrays to select from the object.
+ * @returns The number of possible combinations that can be made from the selected arrays.
+ */
+const straightJoint = (
+  selections: Record<string, any[]>,
+  startingPoint: number,
+  endingPoint: number
+): number =>
+  Object.values(selections)
+    .slice(startingPoint - 1, endingPoint)
+    .reduce((acc: number, arr: any[]) => acc * arr.length, 1);
+
+/**
+ * Calculates the total number of possible combinations that can be made by selecting one element from each array in the given object of arrays,
+ * starting from the specified starting point and taking a total of 'rows' arrays, and then multiplying by the number of rows.
+ * @param selections - An object of arrays, where each array contains the elements to choose from.
+ * @param startingPoint - An integer specifying the starting point to select arrays from the object.
+ * @param rows - An integer specifying the number of arrays to select from the object.
+ * @returns The total number of possible combinations that can be made from the selected arrays.
+ */
+const straightCombo = (
+  selections: Record<string, any[]>,
+  startingPoint: number,
+  endingPoint: number,
+  rows: number
+): number => {
+  // Slice the object of arrays to include only the selected rows, then reduce the values to calculate the total number of combinations
+  const numCombinations = Object.values(selections)
+    .slice(startingPoint - 1, endingPoint)
+    .reduce((acc: number, arr: any) => acc * arr.length, 1);
+
+  // Multiply the total number of combinations by the number of rows to account for the number of possible combinations across all selected rows
+  return numCombinations * rows;
+};
+
+/**
+ * Calculates the number of possible groups of 60 that can be formed using a selection of numbers from two arrays.
+ * @param selections - An object of arrays, where each array contains the elements to choose from.
+ * @returns The number of possible groups of 60 that can be formed using a selection of numbers from the two arrays.
+ */
+const group60 = (selections: Record<string, any[]>): number => {
+  // Generate all combinations of the first array with one element, and the second array with three elements
+  const row1Combination = generateCombinations(Object.values(selections)[0], 1);
+  const row2Combination = generateCombinations(Object.values(selections)[1], 3);
+
+  let counter = 0;
+
+  // Iterate through each combination of the first and second rows
+  row1Combination.forEach((number) => {
+    row2Combination.forEach((value) => {
+      // If the combination of the second row does not include the number from the first row, increment the counter
+      if (!value.includes(number[0])) {
+        counter++;
+      }
+    });
+  });
+
+  return counter;
+};
+
+/**
+ * Calculates the number of ways to pick a group of places based on the
+ * group type, user selections count, and number of checkboxes selected.
+ *
+ * @param pick The group type: either pick2 or pick3 or pick4.
+ * @param selectionsCount The number of user selections.[1,2,3]
+ * @param totalPlacesSelected The number of checkboxes selected.
+ * @returns The number of ways to pick a group of places.
+ */
+export function pickAPlace(
+  pick: number,
+  selectionsCount: number,
+  totalPlacesSelected: number
+): number {
+  if (pick == 3) {
+    // If group type is pick3, use permutations to calculate number of ways to pick
+    // 2 places from the user selections, and then multiply by combinations of
+    // total number of places selected.
+    return (
+      getPermutation(selectionsCount, 2) *
+      getCombination(totalPlacesSelected, pick)
+    );
+  } else {
+    // If group type is 2, simply use combinations of user selections and total
+    // number of places selected to calculate number of ways to pick.
+    return (
+      getCombination(selectionsCount, pick) *
+      getCombination(totalPlacesSelected, pick)
+    );
+  }
+}
+export function pickAPlace3(
+  pick: number,
+  selectionsCount: number,
+  totalPlacesSelected: number
+): number {
+  // console.log("fdss")
+  if (pick == 3) {
+    // If group type is pick3, use permutations to calculate number of ways to pick
+    // 2 places from the user selections, and then multiply by combinations of
+    // total number of places selected.
+    // let b = getPermutation(selectionsCount, 2)
+    // let a = getCombination(totalPlacesSelected, pick)
+    // console.log("a", a)
+    // console.log("totalPlacesSelected", totalPlacesSelected, "pick", pick)
+    // console.log("b", b)
+    return (
+      getPermutation(selectionsCount, 2) *
+      getCombination(totalPlacesSelected, pick)
+    );
+  } else {
+    // If group type is 2, simply use combinations of user selections and total
+    // number of places selected to calculate number of ways to pick.
+    return (
+      getCombination(selectionsCount, pick) *
+      getCombination(totalPlacesSelected, pick)
+    );
+  }
+}
+
+/**
+ * Calculates the number of possible combinations when picking games for a bet.
+ * @param numberOfCheckboxesTicked - The number of checkboxes ticked or available games.
+ * @param numberOfSelectionsFormBet - The desired number of selections to form the bet.
+ * @param selections - The array of selections made.
+ * @returns The number of possible combinations, or 0 if no selections are made.
+ */
+function pickGames(
+  numberOfCheckboxesTicked: number,
+  numberOfSelectionsFormBet: number,
+  selections: number[][],
+  flag?: number
+): number {
+  if (selections.length < numberOfSelectionsFormBet) {
+    return 0;
+  }
+  if (flag) {
+    return (
+      getCombination(selections.length, numberOfSelectionsFormBet) *
+      getCombination(numberOfCheckboxesTicked, 4)
+    );
+  } else {
+    return (
+      getCombination(selections.length, numberOfSelectionsFormBet) *
+      getCombination(numberOfCheckboxesTicked, numberOfSelectionsFormBet)
+    );
+  }
+}
+
+/**
+ * Calculates the number of possible groups of 30 that can be formed using a selection of numbers from two arrays.
+ * @param selections - An object of arrays, where each array contains the elements to choose from.
+ * @returns The number of possible groups of 30 that can be formed using a selection of numbers from the two arrays.
+ */
+function group30(selections: Record<string, any[]>): number {
+  const row1Combination = Object.values(selections)[0];
+  const row2Combination = Object.values(selections)[1];
+
+  // Find the repeated numbers in the two arrays
+  let repeatedNums = row2Combination.filter((element: number) =>
+    row1Combination.includes(element)
+  );
+  let repeat = repeatedNums.length;
+
+  // Calculate the number of possible groups of 30
+  return (
+    ((row1Combination.length * (row1Combination.length - 1)) / 2) *
+    (row2Combination.length - repeat) +
+    (repeat * (row1Combination.length - 1) * (row1Combination.length - 2)) / 2
+  );
+}
+
+/**
+ * Calculates the number of possible groups of 5 that can be formed from a selection of 5 numbers from the first array in an object of arrays.
+ * @param selections - An object of arrays, where each array contains the elements to choose from.
+ * @returns The number of possible groups of 5 that can be formed from a selection of 5 numbers from the first array in the object of arrays.
+ */
+function group120(selections: Record<string, any[]>): number {
+  const row1Combinations = Object.values(selections)[0];
+
+  let len = row1Combinations.length;
+
+  // If there are fewer than 5 elements in the first array, there are no possible groups of 5
+  if (len < 5) {
+    return 0;
+  }
+
+  // Calculate the number of possible groups of 5
+  return getCombination(len, 5);
+}
+
+/**
+ * Calculates the number of possible groups of 5 that can be formed from a selection of 5 numbers from two arrays.
+ * @param selections - An object of arrays, where each array contains the elements to choose from.
+ * @returns The number of possible groups of 5 that can be formed from a selection of 5 numbers from the two arrays.
+ */
+function a5group5(selections: Record<string, any[]>): number {
+  let row1Combination = Object.values(selections)[0];
+  let row2Combination = Object.values(selections)[1];
+
+  // Find the repeated numbers in the two arrays
+  let repeatedNums = row2Combination.filter((element) =>
+    row1Combination.includes(element)
+  );
+  let repeat = repeatedNums.length;
+
+  // Calculate the number of possible groups of 5
+  return (
+    row2Combination.length * (row1Combination.length - repeat) +
+    repeat * (row2Combination.length - 1)
+  );
+}
+
+function a5group10(selections: Record<string, any[]>) {
+  let row1Combination = Object.values(selections)[0];
+  let row2Combination = Object.values(selections)[1];
+  let repeatedNums = row2Combination.filter((element) =>
+    row1Combination.includes(element)
+  );
+  let repeat = repeatedNums.length;
+  return (
+    row2Combination.length * (row1Combination.length - repeat) +
+    repeat * (row2Combination.length - 1)
+  ); //
+}
+
+/**
+ * This function takes an array of selections and generates a sequence of numbers based on the values in the array.
+ *
+ * @param {Array<any>} selections - An array of values that will be used to generate the sequence.
+ * @returns {number} - The final result of the sequence.
+ */
+function generateSequence(selections: any[]): number {
+  let results: number = 0;
+  // Iterate over each selection and generate the sequence based on the value of the selection.
+  for (let n of selections) {
+    if (n < 10) {
+      results += ((n + 1) * (n + 2)) / 2; // Generate sequence for values less than 10.
+    } else if (n > 17) {
+      n = 27 - n; // Reverse the value for values greater than 17.
+      results += ((n + 1) * (n + 2)) / 2; // Generate sequence for reversed values.
+    } else {
+      let term: number = 63; // Start with the base term value for values between 10 and 17.
+      if (n === 11 || n === 16) {
+        term += 6; // Add 6 to the base term for specific values.
+      } else if (n === 12 || n === 15) {
+        term += 10; // Add 10 to the base term for specific values.
+      } else if (n >= 13 && n <= 15) {
+        term += 12; // Add 12 to the base term for specific values.
+      }
+      results += term; // Add the value of the term to the results.
+    }
+  }
+
+  return results; // Return the final result of the sequence.
+}
+
+// const sum = (arr: number[]): number => arr.reduce((acc, val) => acc + val, 0);
+/**
+ * This function takes an array of numbers and returns the sum of those numbers.
+ *
+ * @param {Array<number>} arr - An array of numbers to sum.
+ * @returns {number} - The sum of the numbers in the array.
+ */
+const sum = (arr: number[]): number => {
+  return arr.reduce((acc, val) => acc + val, 0); // Use the reduce method to add up all the numbers in the array and return the result.
+};
+
+/**
+ * This function takes an array of numbers and returns the product of those numbers.
+ *
+ * @param {Array<number>} arr - An array of numbers to multiply.
+ * @returns {number} - The product of the numbers in the array.
+ */
+const mult = (arr: number[]): number => {
+  return arr.reduce((acc, val) => acc * val, 1); // Use the reduce method to multiply all the numbers in the array and return the result.
+};
+
+// const mult = (arr: number[]): number => arr.reduce((acc, val) => acc * val, 1);
+
+// const jointPick = (pick: number, lengths: number[]): number => sum(generateCombinations(lengths, pick).map(val => mult(val)));
+/**
+ * This function takes a number 'pick' and an array of numbers 'lengths' as input and returns the sum of the products of all combinations of 'pick' elements from 'lengths'.
+ *
+ * @param {number} pick - The number of elements to pick from each combination.
+ * @param {Array<number>} lengths - An array of numbers from which to pick the elements.
+ * @returns {number} - The sum of the products of all combinations.
+ */
+const jointPick = (pick: number, lengths: number[]): number => {
+  return sum(generateCombinations(lengths, pick).map((val) => mult(val))); // Use the 'generateCombinations' and 'mult' functions to compute the sum of all combinations of 'pick' elements from 'lengths'.
+};
+
+// export function pick2(array: any[]) {
+//   let count = 0;
+
+//   array.forEach((arr, index) => {
+//     arr.forEach(() => {
+//       if (index < array.length - 1) {
+//         count += array.slice(index + 1).flat().length;
+//         console.log("count", array.slice(index + 1).flat().length)
+//       }
+//     });
+//   });
+
+//   return count;
+// }
+
+/**
+ * This function takes an array of arrays 'array' as input and returns the number of pairs of elements that can be formed by taking one element from each of the subarrays.
+ *
+ * @param {Array<any[]>} array - An array of arrays from which to pick the pairs of elements.
+ * @returns {number} - The number of pairs of elements that can be formed.
+ */
+export function pick2(array: any[]): number {
+  let count = 0;
+
+  array.forEach((arr, index) => {
+    // Loop through each element and its index in the input array.
+    arr.forEach(() => {
+      // Loop through each element in the subarray.
+      if (index < array.length - 1) {
+        // If the current index is less than the length of the input array minus 1.
+        count += array.slice(index + 1).flat().length; // Add the length of the flattened subarrays in the sliced portion of the input array after the current index to the count.
+        console.log("count", array.slice(index + 1).flat().length);
+      }
+    });
+  });
+
+  return count; // Return the total count of pairs of elements.
+}
+/**
+ * Calculates the span value based on a given number.
+ * @param num - The input number.
+ * @returns The span value.
+ */
+export function span(num: number): number {
+  if (num === 0) {
+    return 10 - num;
+  } else {
+    return 6 * num * (10 - num);
+  }
+}
+
+/**
+ * Applies a function to each element in an array and returns the cumulative count.
+ * @param selections - The array of selections.
+ * @param functions - The function to apply to each element.
+ * @param selectedCheckboxes - The number of selected checkboxes. (Default: 0)
+ * @returns The cumulative count based on the applied function.
+ */
+export function applyFunctionAndGetCount(
+  selections: any[],
+  functions: Function,
+  selectedCheckboxes: number = 0
+) {
+  let count = 0;
+  if (!selections.length) {
+    return 0;
+  }
+  selections.forEach((num: any, index: any) => {
+    count += functions(num);
+  });
+  //if selected checkboxes is not greater than 0, then use getCombinations function to get the number of combinations and multiply by the count
+  return selectedCheckboxes > 2
+    ? count * getCombination(selectedCheckboxes, 3)
+    : count;
+}
+
+/**
+ * Counts the number of elements in an array of arrays.
+ * @param selections - The array of arrays.
+ * @returns The total count of elements.
+ */
+export function countArray(selctions: number[][]) {
+  let count = 0;
+  if (!selctions.length) {
+    return 0;
+  }
+  selctions.forEach((num: any, index: any) => {
+    count += num.length;
+  });
+  return count;
+}
+
+/**
+ *
+ * This is a function named getNumCombinations that calculates the number of combinations
+ * of k items that can be chosen from a set of n items.
+ * where n is the total number of user selection
+ * and k is number to form a bet this function get the number of combinations
+ * @param {*} n
+ * @param {*} k
+ * @return {*}
+ */
+export const getNumCombinations = (n: number, k: number): number => {
+  // calculate the binomial coefficient
+  let numerator = 1;
+  for (let i = n; i > n - k; i--) {
+    numerator *= i;
+  }
+  let denominator = 1;
+  for (let i = 1; i <= k; i++) {
+    denominator *= i;
+  }
+
+  return numerator / denominator;
+};
+
+/**
+ * Generates the count of distinct combinations of the first 3 numbers in a group that sum up to a given number.
+ * @param number - The target sum.
+ * @returns The count of distinct combinations.
+ */
+export function generateFirst3SumOfGroup(number: number): number {
+  const arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const ans = [];
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i; j < arr.length; j++) {
+      for (let k = j; k < arr.length; k++) {
+        if (i + j + k === number && i !== k) ans.push([i, j, k]);
+      }
+    }
+  }
+
+  return ans.length;
+}
+
+/**
+ * Returns the fixed digit count for a given game ID and selections.
+ * @param selections - The array of selections.
+ * @param game_id - The game ID.
+ * @returns The fixed digit count.
+ */
+export const fixedDigit = (selections: number[], game_id: number): number => {
+  if (!selections.length) {
+    return 0;
+  }
+  if (game_id === 70 || game_id === 98 || game_id === 131) {
+    return 9;
+  } else {
+    return 54;
+  }
+};
+
+/**
+ * Returns the span value of the first 2 numbers based on a given number.
+ * @param num - The input number.
+ * @returns The span value.
+ */
+export function spanOfFirst2(num: number) {
+  if (num === 0) {
+    return 10;
+  } else if (num > 0) {
+    return 18 + (num - 1) * -2;
+  }
+}
+
+/**
+ * Returns the sum value of the first 2 numbers based on a given number.
+ * @param num - The input number.
+ * @returns The sum value.
+ */
+export function sumOfFirst2(num: number) {
+  if (num < 10) {
+    return num + 1;
+  } else {
+    num = 19 - num;
+    return num;
+  }
+}
+
+/**
+ * Returns the sum value of the first 2 numbers in a group based on a given number.
+ * @param num - The input number.
+ * @returns The sum value of the first 2 numbers.
+ */
+export function first2SumOfGroup(num: number) {
+  let sequence = [];
+
+  for (let i = 1; i < 5; i++) {
+    sequence.push(i, i);
+  }
+  if (num === 9) {
+    return 5;
+  } else if (num < 9) {
+    return sequence[num - 1];
+  } else {
+    return sequence[8 - (num - 9)];
+  }
+}
+
+/**
+ * Calculates the bets for a given game and set of selections within a range of points.
+ * @param gameId - The ID of the game being played.
+ * @param selections - An object containing the player's selections for each option.
+ * @param startingPoint - The minimum number of points in the range to consider.
+ * @param endingPoint - The maximum number of points in the range to consider.
+ * @param sample - The sample space for the game.
+ * @returns The number of total bets for the given game and selections.
+ */
+export function calculateBets(
+  gameId: number,
+  selections: Record<string, any[]>,
+  startingPoint: number,
+  endingPoint: number,
+  rows: number,
+  sample: any,
+  selectedCheckboxes: number[]
+) {
+  switch (gameId) {
+    // for straight joint [1,1,1,1,1]
+    case 1:
+    case 10:
+    case 17:
+    case 24:
+    case 37:
+    case 50:
+    case 63:
+    case 91:
+      return straightJoint(selections, startingPoint, endingPoint);
+
+    // for combo [1,1,1,1,1]
+    case 3:
+    case 12:
+    case 19:
+    case 26:
+    case 39:
+    case 52:
+      return straightCombo(selections, startingPoint, endingPoint, rows);
+    // for group
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 13:
+    case 14:
+    case 15:
+    case 16:
+    case 20:
+    case 21:
+    case 22:
+    case 23: //last 4 group 4
+    case 43:
+    // case 55:
+    case 56:
+    case 67:
+    case 95:
+    case 100:
+    case 101:
+    case 102:
+    case 103:
+    case 104:
+    case 105:
+    case 106:
+    case 107:
+    case 108:
+    case 109:
+    case 110:
+    case 111:
+    case 112:
+    case 113:
+    case 114:
+      if (endingPoint === 1) {
+        return _combinations_totalBets(Object.values(selections)[0], sample[0]);
+      } else {
+        return _combinations_totalBets(
+          Object.values(selections)[0],
+          Object.values(selections)[1],
+          sample[0],
+          sample[1]
+        );
+      }
+
+    // SUM OF 1ST 2ND 3RD
+    case 27:
+    case 40:
+    case 53:
+      return generateSequence(Object.values(selections)[0]);
+
+    case 125:
+      // Joint pick 2
+      return jointPick(
+        2,
+        Object.values(selections).map((arr) => arr.length)
+      );
+
+    case 132:
+      // Joint pick 3
+      return jointPick(
+        3,
+        Object.values(selections).map((arr) => arr.length)
+      );
+
+    case 135:
+      if (Object.values(selections)[0].length > 1) {
+        return pickAPlace(
+          3,
+          Object.values(selections)[0].length,
+          selectedCheckboxes.length
+        );
+      } else {
+        return 0;
+      }
+    // Pick a place 3
+    case 134:
+      return (
+        generateSequence(Object.values(selections)[0]) *
+        getCombination(selectedCheckboxes.length, 3)
+      );
+
+    case 139:
+      // Joint pick 4
+      return jointPick(
+        4,
+        Object.values(selections).map((arr) => arr.length)
+      );
+
+    case 143:
+      return pickGames(
+        selectedCheckboxes.length,
+        sample[0],
+        Object.values(selections)[0],
+        gameId
+      );
+
+    case 144:
+    case 142:
+      return (
+        _combinations_totalBets(
+          Object.values(selections)[0],
+          Object.values(selections)[1],
+          sample[0],
+          sample[1]
+        ) * getCombination(selectedCheckboxes.length, 4)
+      );
+
+    case 128:
+      return pickAPlace(2, Object.values(selections)[0].length, selectedCheckboxes.length);
+
+    case 136:
+      return pickGames(
+        selectedCheckboxes.length,
+        sample[0],
+        Object.values(selections)[0]
+      );
+
+    case 141:
+      return pickGames(
+        selectedCheckboxes.length,
+        sample[0],
+        Object.values(selections)[0]
+      );
+
+    case 138:
+      return applyFunctionAndGetCount(
+        Object.values(selections)[0],
+        generateFirst3SumOfGroup,
+        selectedCheckboxes.length
+      );
+
+    case 28:
+    case 41:
+      return applyFunctionAndGetCount(Object.values(selections)[0], span);
+
+    case 29:
+      return getNumCombinations(Object.values(selections)[0].length, 2) * 2;
+
+    case 30:
+      return getNumCombinations(Object.values(selections)[0].length, 3);
+
+    case 32:
+    case 45:
+    case 58:
+      return applyFunctionAndGetCount(Object.values(selections)[0], generateFirst3SumOfGroup);
+
+    case 99:
+    case 121:
+    case 122:
+    case 123:
+    case 124:
+      return countArray(Object.values(selections));
+
+    // 35, 48, 61, 70, 98
+    case 35:
+    case 48:
+    case 61:
+    case 70:
+    case 98:
+      return fixedDigit(Object.values(selections)[0], gameId);
+
+    case 66:
+    case 94:
+      return applyFunctionAndGetCount(Object.values(selections)[0], spanOfFirst2);
+
+    case 36:
+    case 49:
+    case 62:
+      return Object.values(selections)[0].length;
+
+    case 42:
+    case 55:
+      return (
+        _combinations_totalBets(Object.values(selections)[0], sample[0]) * 2
+      );
+    case 54:
+      return applyFunctionAndGetCount(Object.values(selections)[0], span);
+    case 131:
+      return (
+        fixedDigit(Object.values(selections)[0], gameId) *
+        getCombination(selectedCheckboxes.length, 2)
+      );
+
+    case 65:
+    case 93:
+      return applyFunctionAndGetCount(Object.values(selections)[0], sumOfFirst2);
+    case 127:
+      return (applyFunctionAndGetCount(Object.values(selections)[0], sumOfFirst2) * getCombination(selectedCheckboxes.length, 2));
+    case 69:
+    case 97:
+      return applyFunctionAndGetCount(Object.values(selections)[0], first2SumOfGroup);
+    case 130:
+      return (applyFunctionAndGetCount(Object.values(selections)[0], first2SumOfGroup) * getCombination(selectedCheckboxes.length, 2));
+
+    //manual games here
+    case 2:
+    case 18:
+    case 11:
+    case 25:
+    case 31:
+    case 33:
+    case 34:
+    case 38:
+    case 44:
+    case 46:
+    case 47:
+    case 51:
+    case 57:
+    case 59:
+    case 60:
+    case 64:
+    case 68:
+    case 92:
+    case 96:
+    case 126:
+    case 146:
+    case 148:
+      // console.log("hello", Object.values(selections)[0].length) // 11111, 12345, 22222, 33333, 44444, 55555, 66666, 77777, 88888, 99999, 45083, 98673, 98671
+      return Object.values(selections)[0].length;
+    case 126:
+    case 129:
+    // case 133:
+    case 136:
+      return Object.values(selections)[0].length * getCombination(selectedCheckboxes.length, 2);
+    case 140:
+      return Object.values(selections)[0].length * getCombination(selectedCheckboxes.length, 4)
+    case 145:
+    case 147:
+      return Object.keys(selections).map((key, i) =>
+      selections[key].filter((val) => typeof val === 'number' )
+    ).reduce((acc, curr) => curr.length + acc, 0)
+    case 133:
+      return Object.values(selections)[0].length * getCombination(selectedCheckboxes.length, 3);
+    default:
+      break;
+  }
+}
+//Pick 4 Group 12
+/*
+  switch (gameId) {
+    // for sraight joint [1,1,1,1,1]
+    case 1:
+    case 10:
+    case 17:
+    case 24:
+    case 37:
+    case 50:
+    case 63:
+    case 91:
+      return straightJoint(selections, startingPoint, endingPoint);
+    // for combo [1,1,1,1,1]
+    case 3:
+    case 12:
+    case 19:
+    case 26:
+    case 39:
+    case 52:
+      return straightCombo(selections, startingPoint, endingPoint, rows);
+    //   //for group
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 13:
+    case 14:
+    case 15:
+    case 16:
+    case 20:
+    case 21:
+    case 22:
+    case 23: //last 4 group 4
+    case 43:
+    // case 55:
+    case 56:
+    case 67:
+    // case 95:
+    case 100:
+    case 101:
+    case 102:
+    case 103:
+    case 104:
+    case 105:
+    case 106:
+    case 107:
+    case 108:
+    case 109:
+    case 110:
+    case 111:
+    case 112:
+    case 113:
+    case 114:
+      if (endingPoint === 1) {
+        return _combinations_totalBets(Object.values(selections)[0], sample[0]);
+      } else {
+        return _combinations_totalBets(
+          Object.values(selections)[0],
+          Object.values(selections)[1],
+          sample[0],
+          sample[1]
+        );
+      }
+
+    // SUM OF 1ST 2ND 3RD
+    case 27:
+    case 40:
+    case 53:
+      return generateSequence(Object.values(selections)[0]);
+    //     break;
+    case 125:
+      // Joint pick 2
+      return jointPick(
+        2,
+        Object.values(selections).map((arr) => arr.length)
+      );
+    case 132:
+      // Joint pick 3
+      return jointPick(
+        3,
+        Object.values(selections).map((arr) => arr.length)
+      );
+    case 135:
+      if (Object.values(selections)[0].length < 0) {
+        return 0;
+      }
+      // Pick a place 3
+      return pickAPlace(3, Object.values(selections)[0].length, selectedCheckboxes.length);
+    case 134:
+      return (generateSequence(Object.values(selections)[0])) * getCombination(selectedCheckboxes.length, 3);
+    case 139:
+      // Joint pick 4
+      return jointPick(
+        4,
+        Object.values(selections).map((arr) => arr.length)
+      );
+    // case 142:
+    case 143:
+      return pickGames(
+        selectedCheckboxes.length,
+        sample[0],
+        Object.values(selections)[0],
+        gameId
+      );
+    // return pickGames(5, 2, Object.values(selections)[0], game_id);
+    case 144:
+    case 142:
+      // console.log("sdfsdhff", sample)
+      // return pickAPlace(4, Object.values(selections)[0].length, selectedCheckboxes.length);
+      return _combinations_totalBets(
+        Object.values(selections)[0],
+        Object.values(selections)[1],
+        sample[0],
+        sample[1]
+      ) * getCombination(selectedCheckboxes.length, 4);
+    case 128:
+      return pickAPlace(4, Object.values(selections)[0].length, 5);
+    case 136:
+      // console.log(Object.values(selections))
+      return pickGames(
+        selectedCheckboxes.length,
+        sample[0],
+        Object.values(selections)[0]
+      );
+    case 141:
+      // for Pick 4 Group 24 minimum 4 checkboxes and 4 selections form a bet
+      // console.log("sdfsdhff", sample[0])
+      return pickGames(selectedCheckboxes.length, sample[0], Object.values(selections)[0]);
+    case 138:
+      return applyFunctionAndGetCount(Object.values(selections)[0], generateFirst3SumOfGroup, selectedCheckboxes.length);
+    // case 142:
+    // return pickGames(5, 4, Object.values(selections)[0]);
+    // span of first 3 and mid 3
+    case 28:
+    case 41:
+    case 54:
+      return applyFunctionAndGetCount(Object.values(selections)[0], span);
+    case 29:
+      return getNumCombinations(Object.values(selections)[0].length, 2) * 2;
+    case 30:
+      return getNumCombinations(Object.values(selections)[0].length, 3);
+    case 32:
+    case 45:
+    case 58:
+      return applyFunctionAndGetCount(Object.values(selections)[0], generateFirst3SumOfGroup);
+    case 99:
+    case 121:
+    case 122:
+    case 123:
+    case 124:
+      return countArray(Object.values(selections));
+    // 35, 48, 61, 70, 98
+    case 35:
+    case 48:
+    case 61:
+    case 70:
+    case 98:
+      return fixedDigit(Object.values(selections)[0], gameId);
+    //span
+    case 66:
+      return applyFunctionAndGetCount(Object.values(selections)[0], spanOfFirst2);
+    case 36:
+    case 49:
+    case 62:
+      return Object.values(selections)[0].length;
+    case 42:
+    case 55:
+      return (
+        _combinations_totalBets(Object.values(selections)[0], sample[0]) * 2
+      );
+    case 131:
+      return fixedDigit(Object.values(selections)[0], gameId) * getCombination(selectedCheckboxes.length, 2);
+    default:
+      break;
+  }
+*/
+//Pick 4 Group 6
+//Pick 4 Group 4
