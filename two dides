@@ -1,0 +1,27 @@
+import React,{useState} from "react";
+import Card from '../components/uiComponents/Card'
+import styles from '../styles/Twosides.module.css'
+
+
+function Twosides() {
+  const CardMap = [[0, 1, 2, 3], [0, 1, 2], [0, 1], [0]];
+  const MainData = []
+
+  const [total,setTotal] = useState([])
+  const [selection,setSelection] = useState([])
+
+  return (
+    <div className={styles.twosidecont}>
+      {CardMap.map((arr,i) => (
+        <div key={i} className={styles.rowvx}>
+          {arr.map((card, index) => (
+               <Card selections={selection} setSelection={setSelection} setTotal={setTotal} title={(i+1+' vs '+(+index+2+i))} MainData={MainData}  key={index} cardIndex={i} numberIndex={index} />
+          ))}
+        </div>
+      ))}
+      <div className="bets">{selection} , {total} yuan </div>
+    </div>
+  );
+}
+
+export default Twosides;
