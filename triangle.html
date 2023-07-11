@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="triangle.css" />
+    <title>Tirangle</title>
+    <style>
+        * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: #f5f5f5;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100vh;
+}
+
+.number {
+  color: red;
+  font-size: 20px;
+}
+
+.arrow-bottom {
+  margin-top: -9rem;
+  border-top: 5rem solid transparent;
+  border-right: 5rem solid transparent;
+  border-left: 5rem solid transparent;
+  border-bottom: 5rem solid #ff00d4;
+  border-radius: 0.06rem;
+  color: #333;
+  margin-left: 0.4rem;
+
+}
+
+.arrow-right {
+  border-top: 5rem solid transparent;
+  border-right: 5rem solid #3be610;
+  border-bottom: 5rem solid transparent;
+  border-left: 5rem solid transparent;
+  border-radius: 0.06rem;
+  color: #333;
+  left: 0.7rem;
+
+}
+
+.arrow-left-wrapper .number {
+    position: absolute;
+    top: 20px;
+    left: 70px;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 1;
+    text-align: center;
+    width: 1rem;
+    height: 1rem;
+    line-height: 1rem;
+    border-radius: 50%;
+    background-color: #007bff;
+    border: 0.1rem solid #fff;
+    box-shadow: 0 0 0 0.1rem #007bff;
+}
+
+.arrow-right-wrapper, .arrow-left-wrapper, .arrow-top-wrapper, .arrow-bottom-wrapper{
+    position: relative;
+}
+
+.arrow-right-wrapper .number {
+    position: absolute;
+    top: 20px;
+    left: 70px;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 1;
+    text-align: center;
+    width: 1rem;
+    height: 1rem;
+    line-height: 1rem;
+    border-radius: 50%;
+    background-color: #3be610;
+    border: 0.1rem solid #fff;
+    box-shadow: 0 0 0 0.1rem #3be610;
+}
+
+
+.arrow-bottom-wrapper .number {
+    position: absolute;
+    top: 60px;
+    left: 7px;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 1;
+    text-align: center;
+    width: 1rem;
+    height: 1rem;
+    line-height: 1rem;
+    border-radius: 50%;
+    background-color: #ff00d4;
+    border: 0.1rem solid #fff;
+    box-shadow: 0 0 0 0.1rem #ff00d4;
+}
+
+.arrow-top-wrapper .number {
+    position: absolute;
+    top: 20px;
+    left: 70px;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 1;
+    text-align: center;
+    width: 1rem;
+    height: 1rem;
+    line-height: 1rem;
+    border-radius: 50%;
+    background-color: grey;
+    border: 0.1rem solid #fff;
+    box-shadow: 0 0 0 0.1rem grey;
+}
+
+.arrow-left {
+  margin-top: -9rem;
+  border-top: 5rem solid transparent;
+  border-left: 5rem solid #0658f1;
+  border-bottom: 5rem solid transparent;
+  border-right: 5rem solid transparent;
+  border-radius: 0.06rem;
+  color: #333;
+}
+.arrow-top {
+  left: -2rem;
+  margin-bottom: -9rem;
+  border-top: 5rem solid grey;
+  border-left: 5rem solid transparent;
+  border-bottom: 5rem solid transparent;
+  border-right: 5rem solid transparent;
+  border-radius: 0.06rem;
+  color: #333;
+}
+
+.containers {
+  height: 20px !important;
+  width: 15px !important;
+  /* overflow: hidden !important; */
+  position: relative;
+  /* background-color: #007bff; */
+}
+/*  */
+    </style>
+  </head>
+  <body>
+    <h1>Triangle</h1>
+    <div class="containers">
+        <div class="arrow-top-wrapper">
+            <div class="arrow-top"></div>
+
+        </div>
+        <div class="arrow-right-wrapper">
+            <div class="arrow-right"></div>
+            <div class="number">23</div>
+        </div>
+        <div class="arrow-left-wrapper">
+            <div class="arrow-left"></div>
+            <div class="number">23</div>
+        </div>
+        <div class="arrow-bottom-wrapper">
+            <div class="arrow-bottom"></div>
+            <div class="number">23</div>
+        </div>
+
+    </div>
+
+   
+    <script src="triangle.js"></script>
+  </body>
+</html>
