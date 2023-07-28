@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="US-en">
+  <head>
+	<title>Coins</title>
+    <style>
+      body {
+        background-color: rgb(250, 250, 250);
+      }
+
+      div#lipsum {
+        max-width: 500px;
+        background-color: rgb(230, 230, 230);
+        display: inline-block;
+        padding-right: 20px;
+        padding-left: 20px;
+        padding-top: 50px;
+        padding-bottom: 100px;
+      }
+
+      /* create a badge*/
+      #badge {
+        background: #dd4b39;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 3px;
+        font-size: 14px;
+
+        /* Positioning */
+        position: absolute;
+        top: 10px;
+        left: 10px;
+      }
+
+      /* Make badge overlap coin stack */
+      #badge {
+        z-index: 1;
+      }
+
+      /* Some shadow for depth */
+      #badge {
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Transition for smooth animations */
+      #badge {
+        transition: all 0.2s ease-in-out;
+      }
+
+      /* Hover/focus states */
+      #badge:hover,
+      #badge:focus {
+        transform: scale(1.1);
+      }
+
+      div#lipsum div#CoinStackBar {
+        float: right;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+    <script src="coinStackBarv0-7.js"></script>
+  </head>
+
+  <body onclick="setup()">
+    <div id="lipsum">
+      <div id="badge" class="hidden"></div>
+      <div id="CoinStackBar"></div>
+    </div>
+  </body>
+  <script type="text/javascript">
+    window.requestAnimFrame = (function (callback) {
+      return (
+        window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function (callback) {
+          window.setTimeout(callback, 1000 / 60);
+        }
+      );
+    })();
+
+    //The following functions are only to test the CoinStackBar object
+    const coinimg = ["bitcoin.png"];
+    let CS = new CoinStackBar({
+      container: document.getElementById("CoinStackBar"),
+      coinimgsrc: coinimg,
+      coinimgwidth: 750,
+      coinimgheight: 290,
+      coinheight: 30,
+      xoffset: 10,
+      yoffset: 6,
+      startvalue: 0,
+      maxstackheight: 30,
+      containerwidth: 50,
+      containerheight: 50,
+      showshadow: false,
+    });
+
+    let count = 0;
+    let badgeCount = 0;
+    function setup() {
+      CS.setValue(count);
+      CS.setValue((count += 3.3));
+    //   console.log(CS.coins.length);
+      document.getElementById("badge").innerHTML = CS.coins.length;
+
+      if (CS.coins.length > 29) {
+        badgeCount++;
+
+        document.getElementById("badge").innerHTML = badgeCount + CS.coins.length;
+
+        document.querySelector("#badge").classList.remove("hidden");
+        // let a = document.getElementById("badge").innerText
+        // console.log("coins limit exceeded", Number(a) + 1);
+        // document.getElementById("badge").innerHTML = a++;
+      }
+    }
+  </script>
+</html>
