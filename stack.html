@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: rgb(250, 250, 250);
+        }
+
+        div#lipsum {
+            max-width: 500px;
+            background-color: rgb(230, 230, 230);
+            display: inline-block;
+            padding-right: 20px;
+            padding-left: 20px;
+            padding-top: 50px;
+            padding-bottom: 100px;
+        }
+
+        div#lipsum div#CoinStackBar {
+            float: right;
+        }
+    </style>
+    <script src="coinStackBarv0-7.js"></script>
+    <script type="text/javascript">
+        let h = 0; // Variable to keep track of the current value
+
+        window.requestAnimFrame = (function (callback) {
+            return (
+                window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function (callback) {
+                    window.setTimeout(callback, 1000 / 60);
+                }
+            );
+        })();
+
+        function setup() {
+            if (!document.createElement('svg').getAttributeNS) {
+                var coinimg = ['stack/bitcoin.png', 'stack/bitcoin-silver.png', 'stack/bitcoin-copper.png'];
+            } else {
+                coinimg = ['stack/bitcoin.svg', 'stack/bitcoin-silver.svg', 'stack/bitcoin-copper.svg'];
+            }
+
+            cs = new CoinStackBar({
+                container: document.getElementById("CoinStackBar"),
+                coinimgsrc: coinimg,
+                coinimgwidth: 200,
+                coinimgheight: 100,
+                coinheight: 30,
+                xoffset: 10,
+                yoffset: 6,
+                startvalue: 0,
+                maxstackheight: 30,
+                containerwidth: 50,
+                containerheight: 500,
+            });
+
+            // Add click event listener to the body
+            document.body.addEventListener("click", stackCoin);
+        }
+
+        function stackCoin() {
+            h += 2.5; // Increase the value by 2.5 on each click
+            console.log("height", h);
+            document.getElementById('CoinStackBar').CoinStackBar.setValue(h);
+        }
+    </script>
+</head>
+<body onload="setup()">
+    <div id="lipsum">
+        <div id="CoinStackBar"></div>
+    </div>
+</body>
+</html>
