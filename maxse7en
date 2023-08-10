@@ -1,0 +1,13 @@
+function aaa(arr3, values) {
+  let indexes = [];
+  let a = [...new Set(arr3)];
+  if (values[0] === values[1]) {
+    arr3.forEach((item, index) => {
+      item === values[0] || (item === values[1] && indexes.push(index));
+    });
+  } else {
+    a.forEach((item, index) => {
+      item === values[0] || (item === values[1] && indexes.push(index));
+    });
+  }
+}
