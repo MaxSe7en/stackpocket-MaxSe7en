@@ -1,0 +1,16 @@
+function aaa() {
+  if (values[0] === values[1]) {
+    for (let i = 0; i < arr3.length; i++) {
+      if (arr3[i] === values[0] || arr3[i] === values[1]) {
+        indexes.push(i);
+      }
+    }
+  } else {
+    let a = [...new Set(arr3)];
+    a.forEach((item, index) => {
+      if (item === values[0] || item === values[1]) {
+        indexes.push(index);
+      }
+    });
+  }
+}
